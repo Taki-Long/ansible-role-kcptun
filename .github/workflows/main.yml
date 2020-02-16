@@ -48,9 +48,7 @@ jobs:
           tag: ${{ matrix.image.tag }}
           type: native
   release:
-    if: github.event_name != 'pull_request'
-    needs:
-      - test
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: galaxy
