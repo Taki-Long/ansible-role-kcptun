@@ -14,4 +14,3 @@ kcptun_download_url: "https://github.com/xtaci/kcptun/releases/download/v{{kcptu
 kcptun_server_config: {}
 
 kcptun_client_config: {}
-
