@@ -2,23 +2,19 @@
 name: Test
 on:
   push:
-    branches: 
+    branches:
       - master
     paths-ignore:
       - README.md
       - LICENSE
   pull_request:
-    branches: 
+    branches:
       - master
     paths-ignore:
       - README.md
       - LICENSE
-  release:
-    types:
-      - published
 jobs:
   test:
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -49,11 +45,3 @@ jobs:
           image: ${{ matrix.image.name }}
           tag: ${{ matrix.image.tag }}
           type: native
-  release:
-    if: github.event_name == 'release'
-    runs-on: ubuntu-latest
-    steps:
-      - name: galaxy
-        uses: robertdebock/galaxy-action@1.0.3
-        with:
-          galaxy_api_key: ${{ secrets.galaxy_api_key }}
