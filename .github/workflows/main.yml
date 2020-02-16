@@ -14,6 +14,8 @@ on:
       - README.md
       - LICENSE
   release:
+    types:
+      - published
 jobs:
   test:
     if: github.event_name != 'release'
