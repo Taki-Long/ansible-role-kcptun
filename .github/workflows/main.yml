@@ -13,8 +13,10 @@ on:
     paths-ignore:
       - README.md
       - LICENSE
+  release:
 jobs:
   test:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -46,7 +48,7 @@ jobs:
           tag: ${{ matrix.image.tag }}
           type: native
   release:
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     needs:
       - test
     runs-on: ubuntu-latest
