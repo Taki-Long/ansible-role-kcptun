@@ -1,0 +1,10 @@
+---
+- name: restart kcptun server
+  service:
+    name: kcptun-server
+    state: restarted
+
+- name: restart kcptun client
+  service:
+    name: kcptun-client
+    state: restarted

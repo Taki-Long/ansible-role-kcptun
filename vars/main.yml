@@ -1,0 +1,3 @@
+---
+kcptun_server_cmd: "server_{{ kcptun_system }}_{{ kcptun_arch }}"
+kcptun_client_cmd: "client_{{ kcptun_system }}_{{ kcptun_arch }}"

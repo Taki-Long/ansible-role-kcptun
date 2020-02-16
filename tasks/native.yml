@@ -1,0 +1,78 @@
+- name: check kcptun
+  command: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -version"
+  register: check_version
+  changed_when: no
+  ignore_errors: yes
+
+- name: force install kcptun if version do not match
+  set_fact:
+    kcptun_install: true
+  when: check_version is failed or check_version.stdout is not search(kcptun_version)
+
+- name: install kcptun
+  block:
+    - name: kcptun path folder
+      file:
+        path: "{{ kcptun_install_path }}"
+        state: directory
+
+    - name: download and unarchive
+      unarchive:
+        dest: "{{ kcptun_install_path }}"
+        src: "{{ kcptun_download_url }}"
+        remote_src: yes
+  when: kcptun_install | default(false) | bool
+
+- name: setup server service
+  include_role:
+    name: 0x0i.systemd
+  vars:
+    unit_config:
+      - name: kcptun-server
+        Unit:
+          Description: kcptun server
+          Wants: network.target
+          After: syslog.target network-online.target
+        Service:
+          Type: simple
+          ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/server.json"
+          Restart: on-failure
+          RestartSec: 10
+          KillMode: process
+          LimitNOFILE: 65535
+        Install:
+          WantedBy: multi-user.target
+
+- name: setup client service
+  include_role:
+    name: 0x0i.systemd
+  vars:
+    unit_config:
+      - name: kcptun-client
+        Unit:
+          Description: kcptun client
+          Wants: network.target
+          After: syslog.target network-online.target
+        Service:
+          Type: simple
+          ExecStart: "{{ kcptun_install_path }}/{{ kcptun_client_cmd }} -c {{ kcptun_config_path }}/client.json"
+          Restart: on-failure
+          RestartSec: 10
+          KillMode: process
+          LimitNOFILE: 65535
+        Install:
+          WantedBy: multi-user.target
+
+- name: enable and start kcptun server
+  service:
+    name: kcptun-server
+    enabled: yes
+    state: started
+  when: kcptun_server_enable | bool
+
+- name: enable and start kcptun client
+  service:
+    name: kcptun-client
+    enabled: yes
+    state: started
+  when: kcptun_client_enable | bool
