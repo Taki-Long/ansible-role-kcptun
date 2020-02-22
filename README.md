@@ -1,5 +1,4 @@
-kcptun
-=========
+# kcptun
 
 ![Test Status](https://github.com/nbjwl/ansible-role-kcptun/workflows/Test/badge.svg)
 
