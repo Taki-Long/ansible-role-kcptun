@@ -16,10 +16,15 @@
         path: "{{ kcptun_install_path }}"
         state: directory
 
+    - name: download kcptun package
+      get_url:
+        url: "{{ kcptun_download_url }}"
+        dest: /tmp/kcptun_package.tar.gz
+
     - name: download and unarchive
       unarchive:
         dest: "{{ kcptun_install_path }}"
-        src: "{{ kcptun_download_url }}"
+        src: /tmp/kcptun_package.tar.gz
         remote_src: yes
   when: kcptun_install | default(false) | bool
 
