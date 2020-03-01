@@ -2,15 +2,17 @@
 kcptun_install_path: /usr/bin/kcptun
 kcptun_config_path: /etc/kcptun
 
-kcptun_client_enable: false
-kcptun_server_enable: true
+# kcptun_server_config: {}
+
+# kcptun_client_config: {}
+
+kcptun_client_enable: "{{ kcptun_client_config is defined }}"
+kcptun_server_enable: "{{ kcptun_server_config is defined }}"
 
 kcptun_version: "20200201"
-kcptun_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture | lower}}"
+kcptun_arch: amd64
 kcptun_system: "{{ ansible_system | lower }}"
 
 kcptun_download_url: "https://github.com/xtaci/kcptun/releases/download/v{{kcptun_version}}/kcptun-{{ kcptun_system }}-{{ kcptun_arch }}-{{kcptun_version}}.tar.gz"
 
-kcptun_server_config: {}
 
-kcptun_client_config: {}
