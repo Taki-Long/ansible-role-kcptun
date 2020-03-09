@@ -14,14 +14,14 @@
 
 - name: config server
   copy:
-    dest: "{{ kcptun_config_path }}/server.json"
+    dest: "{{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
     content: "{{ kcptun_server_config | to_nice_json }}"
   notify: restart kcptun server
-  when: kcptun_server_enable | bool
+  when: kcptun_server_config is defined
 
 - name: config client
   copy:
-    dest: "{{ kcptun_config_path }}/client.json"
+    dest: "{{ kcptun_config_path }}/{{ kcptun_client_name }}.json"
     content: "{{ kcptun_client_config | to_nice_json }}"
   notify: restart kcptun client
-  when: kcptun_client_enable | bool
+  when: kcptun_client_config is defined

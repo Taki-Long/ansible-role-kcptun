@@ -29,7 +29,8 @@ provisioner:
     hosts:
       all:
         vars:
-          kcptun_client_enable: true
+          kcptun_client_config: {}
+          kcptun_server_config: {}
   log: true
   lint:
     name: ansible-lint

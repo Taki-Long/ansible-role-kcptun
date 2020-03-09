@@ -5,9 +5,8 @@ kcptun_config_path: /etc/kcptun
 # kcptun_server_config: {}
 
 # kcptun_client_config: {}
-
-kcptun_client_enable: "{{ kcptun_client_config is defined }}"
-kcptun_server_enable: "{{ kcptun_server_config is defined }}"
+kcptun_server_name: "kcptun-server"
+kcptun_client_name: "kcptun-client"
 
 kcptun_version: "20200201"
 kcptun_arch: amd64

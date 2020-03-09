@@ -28,56 +28,58 @@
         remote_src: yes
   when: kcptun_install | default(false) | bool
 
-- name: setup server service
-  include_role:
-    name: 0x0i.systemd
-  vars:
-    unit_config:
-      - name: kcptun-server
-        Unit:
-          Description: kcptun server
-          Wants: network.target
-          After: syslog.target network-online.target
-        Service:
-          Type: simple
-          ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/server.json"
-          Restart: on-failure
-          RestartSec: 10
-          KillMode: process
-          LimitNOFILE: 65535
-        Install:
-          WantedBy: multi-user.target
+- name: setup kcptun server
+  block:
+    - name: setup service
+      include_role:
+        name: 0x0i.systemd
+      vars:
+        unit_config:
+          - name: "{{ kcptun_server_name }}"
+            Unit:
+              Description: kcptun server
+              Wants: network.target
+              After: syslog.target network-online.target
+            Service:
+              Type: simple
+              ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
+              Restart: on-failure
+              RestartSec: 10
+              KillMode: process
+              LimitNOFILE: 65535
+            Install:
+              WantedBy: multi-user.target
+    - name: enable and start kcptun server
+      service:
+        name: kcptun-server
+        enabled: yes
+        state: started
+  when: kcptun_server_config is defined
 
-- name: setup client service
-  include_role:
-    name: 0x0i.systemd
-  vars:
-    unit_config:
-      - name: kcptun-client
-        Unit:
-          Description: kcptun client
-          Wants: network.target
-          After: syslog.target network-online.target
-        Service:
-          Type: simple
-          ExecStart: "{{ kcptun_install_path }}/{{ kcptun_client_cmd }} -c {{ kcptun_config_path }}/client.json"
-          Restart: on-failure
-          RestartSec: 10
-          KillMode: process
-          LimitNOFILE: 65535
-        Install:
-          WantedBy: multi-user.target
-
-- name: enable and start kcptun server
-  service:
-    name: kcptun-server
-    enabled: yes
-    state: started
-  when: kcptun_server_enable | bool
-
-- name: enable and start kcptun client
-  service:
-    name: kcptun-client
-    enabled: yes
-    state: started
-  when: kcptun_client_enable | bool
+- name: setup kcptun client
+  block:
+    - name: setup kcptun client
+      include_role:
+        name: 0x0i.systemd
+      vars:
+        unit_config:
+          - name: "{{ kcptun_client_name }}"
+            Unit:
+              Description: kcptun client
+              Wants: network.target
+              After: syslog.target network-online.target
+            Service:
+              Type: simple
+              ExecStart: "{{ kcptun_install_path }}/{{ kcptun_client_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_client_name }}.json"
+              Restart: on-failure
+              RestartSec: 10
+              KillMode: process
+              LimitNOFILE: 65535
+            Install:
+              WantedBy: multi-user.target
+    - name: enable and start kcptun client
+      service:
+        name: kcptun-client
+        enabled: yes
+        state: started
+  when: kcptun_client_config is defined
