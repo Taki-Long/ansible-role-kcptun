@@ -14,7 +14,7 @@ platforms:
     pre_build_image: true
     override_command: False
     volumes:
-     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - "${image}"
     privileged: true
@@ -40,4 +40,3 @@ verifier:
   name: testinfra
   lint:
     name: flake8
-  
