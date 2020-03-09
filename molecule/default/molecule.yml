@@ -29,6 +29,8 @@ provisioner:
     hosts:
       all:
         vars:
+          kcptun_client_name: test-client-service
+          kcptun_server_name: test-server-service
           kcptun_client_config: {}
           kcptun_server_config: {}
   log: true

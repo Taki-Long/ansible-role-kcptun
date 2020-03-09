@@ -15,8 +15,8 @@ def test_hosts_file(host):
 
 
 @pytest.mark.parametrize("service", [
-    "kcptun-server",
-    "kcptun-client"
+    "test-client-service",
+    "test-server-service"
 ])
 def test_service_config(host, service):
     service = host.service(service)

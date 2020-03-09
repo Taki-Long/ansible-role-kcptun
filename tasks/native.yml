@@ -21,7 +21,7 @@
         url: "{{ kcptun_download_url }}"
         dest: /tmp/kcptun_package.tar.gz
 
-    - name: download and unarchive
+    - name: unarchive
       unarchive:
         dest: "{{ kcptun_install_path }}"
         src: /tmp/kcptun_package.tar.gz
@@ -51,7 +51,7 @@
               WantedBy: multi-user.target
     - name: enable and start kcptun server
       service:
-        name: kcptun-server
+        name: "{{ kcptun_server_name }}"
         enabled: yes
         state: started
   when: kcptun_server_config is defined
@@ -79,7 +79,7 @@
               WantedBy: multi-user.target
     - name: enable and start kcptun client
       service:
-        name: kcptun-client
+        name: "{{ kcptun_client_name }}"
         enabled: yes
         state: started
   when: kcptun_client_config is defined
