@@ -1,3 +1,34 @@
 ---
 kcptun_server_cmd: "server_{{ kcptun_system }}_{{ kcptun_arch }}"
 kcptun_client_cmd: "client_{{ kcptun_system }}_{{ kcptun_arch }}"
+kcptun_server_unit:
+  - name: "{{ kcptun_server_name }}"
+    Unit:
+      Description: kcptun server
+      Wants: network.target
+      After: syslog.target network-online.target
+    Service:
+      Type: simple
+      ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
+      Restart: on-failure
+      RestartSec: 10
+      KillMode: process
+      LimitNOFILE: 65535
+    Install:
+      WantedBy: multi-user.target
+
+kcptun_client_unit:
+  - name: "{{ kcptun_server_name }}"
+    Unit:
+      Description: kcptun server
+      Wants: network.target
+      After: syslog.target network-online.target
+    Service:
+      Type: simple
+      ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
+      Restart: on-failure
+      RestartSec: 10
+      KillMode: process
+      LimitNOFILE: 65535
+    Install:
+      WantedBy: multi-user.target
