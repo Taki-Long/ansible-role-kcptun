@@ -31,7 +31,7 @@
 - name: setup kcptun server
   block:
     - name: setup service
-      include_role:
+      import_role:
         name: 0x0i.systemd
       vars:
         unit_config:
@@ -59,7 +59,7 @@
 - name: setup kcptun client
   block:
     - name: setup kcptun client
-      include_role:
+      import_role:
         name: 0x0i.systemd
       vars:
         unit_config:
