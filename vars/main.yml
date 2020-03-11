@@ -18,14 +18,14 @@ kcptun_server_unit:
       WantedBy: multi-user.target
 
 kcptun_client_unit:
-  - name: "{{ kcptun_server_name }}"
+  - name: "{{ kcptun_client_name }}"
     Unit:
-      Description: kcptun server
+      Description: kcptun client
       Wants: network.target
       After: syslog.target network-online.target
     Service:
       Type: simple
-      ExecStart: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
+      ExecStart: "{{ kcptun_install_path }}/{{ kcptun_client_cmd }} -c {{ kcptun_config_path }}/{{ kcptun_client_name }}.json"
       Restart: on-failure
       RestartSec: 10
       KillMode: process
