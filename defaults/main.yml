@@ -13,5 +13,3 @@ kcptun_arch: amd64
 kcptun_system: "{{ ansible_system | lower }}"
 
 kcptun_download_url: "https://github.com/xtaci/kcptun/releases/download/v{{kcptun_version}}/kcptun-{{ kcptun_system }}-{{ kcptun_arch }}-{{kcptun_version}}.tar.gz"
-
-
