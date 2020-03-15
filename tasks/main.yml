@@ -1,9 +1,4 @@
 ---
-- name: create config folder
-  file:
-    path: "{{ kcptun_config_path }}"
-    state: directory
-
 - name: install kcptun (native)
   include_tasks: native.yml
 
@@ -12,16 +7,8 @@
     path: "{{ kcptun_config_path }}"
     state: directory
 
-- name: config server
+- name: config kcptun
   copy:
-    dest: "{{ kcptun_config_path }}/{{ kcptun_server_name }}.json"
-    content: "{{ kcptun_server_config | to_nice_json }}"
-  notify: restart kcptun server
-  when: kcptun_server_config is defined
-
-- name: config client
-  copy:
-    dest: "{{ kcptun_config_path }}/{{ kcptun_client_name }}.json"
-    content: "{{ kcptun_client_config | to_nice_json }}"
-  notify: restart kcptun client
-  when: kcptun_client_config is defined
+    dest: "{{ kcptun_config_path }}/{{ kcptun_service_name }}.json"
+    content: "{{ kcptun_config | to_nice_json }}"
+  notify: restart kcptun service
