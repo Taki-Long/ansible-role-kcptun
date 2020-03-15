@@ -15,8 +15,7 @@ def test_hosts_file(host):
 
 
 @pytest.mark.parametrize("service", [
-    "test-client-service",
-    "test-server-service"
+    "test-service",
 ])
 def test_service_config(host, service):
     service = host.service(service)

@@ -1,5 +1,5 @@
 - name: check kcptun
-  command: "{{ kcptun_install_path }}/{{ kcptun_server_cmd }} -version"
+  command: "{{ kcptun_install_path }}/{{ kcptun_cmd }} -version"
   register: check_version
   changed_when: no
   ignore_errors: yes
@@ -28,30 +28,14 @@
         remote_src: yes
   when: kcptun_install | default(false) | bool
 
-- name: setup kcptun server
-  block:
-    - name: setup service
-      import_role:
-        name: 0x0i.systemd
-      vars:
-        unit_config: "{{ kcptun_server_unit }}"
-    - name: enable and start kcptun server
-      service:
-        name: "{{ kcptun_server_name }}"
-        enabled: yes
-        state: started
-  when: kcptun_server_config is defined
+- name: setup service
+  import_role:
+    name: 0x0i.systemd
+  vars:
+    unit_config: "{{ kcptun_service_unit }}"
 
-- name: setup kcptun client
-  block:
-    - name: setup kcptun client
-      import_role:
-        name: 0x0i.systemd
-      vars:
-        unit_config: "{{ kcptun_client_unit }}"
-    - name: enable and start kcptun client
-      service:
-        name: "{{ kcptun_client_name }}"
-        enabled: yes
-        state: started
-  when: kcptun_client_config is defined
+- name: enable and start kcptun service
+  service:
+    name: "{{ kcptun_service_name }}"
+    enabled: yes
+    state: started

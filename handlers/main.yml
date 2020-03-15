@@ -1,10 +1,6 @@
 ---
-- name: restart kcptun server
+- name: restart kcptun service
   service:
-    name: "{{ kcptun_server_name }}"
+    name: "{{ kcptun_service_name }}"
     state: restarted
 
-- name: restart kcptun client
-  service:
-    name: "{{ kcptun_client_name }}"
-    state: restarted
