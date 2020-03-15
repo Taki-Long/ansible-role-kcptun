@@ -3,4 +3,3 @@
   service:
     name: "{{ kcptun_service_name }}"
     state: restarted
-
