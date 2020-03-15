@@ -34,7 +34,7 @@
   vars:
     unit_config: "{{ kcptun_service_unit }}"
 
-- name: enable and start kcptun server
+- name: enable and start kcptun service
   service:
     name: "{{ kcptun_service_name }}"
     enabled: yes
